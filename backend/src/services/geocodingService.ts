@@ -147,7 +147,7 @@ export async function forwardGeocode(address: string): Promise<ForwardGeocodeRes
 
   const url = `${NOMINATIM_BASE_URL}/search?${params.toString()}`;
   const response = await fetchWithRetry(url);
-  const results: NominatimSearchResult[] = await response.json();
+  const results = (await response.json()) as NominatimSearchResult[];
 
   if (!results || results.length === 0) {
     throw new GeocodingServiceError('No results found for the entered address', 404);
@@ -184,7 +184,7 @@ export async function reverseGeocode(lat: number, lon: number): Promise<ReverseG
 
   const url = `${NOMINATIM_BASE_URL}/reverse?${params.toString()}`;
   const response = await fetchWithRetry(url);
-  const result: NominatimReverseResult = await response.json();
+  const result = (await response.json()) as NominatimReverseResult;
 
   if (!result || !result.address) {
     throw new GeocodingServiceError('No results found for the given coordinates', 404);
@@ -230,7 +230,7 @@ export async function autocomplete(
 
   const url = `${NOMINATIM_BASE_URL}/search?${params.toString()}`;
   const response = await fetchWithRetry(url);
-  const results: NominatimSearchResult[] = await response.json();
+  const results = (await response.json()) as NominatimSearchResult[];
 
   const suggestions: AddressSuggestion[] = (results || []).map((r) => ({
     displayName: r.display_name,

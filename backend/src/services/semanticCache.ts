@@ -63,8 +63,8 @@ async function generateEmbedding(text: string): Promise<number[] | null> {
       return null;
     }
 
-    const data = await response.json();
-    return data.embedding as number[];
+    const data = (await response.json()) as { embedding: number[] };
+    return data.embedding;
   } catch (error) {
     console.warn('Ollama is unreachable, falling back to exact string matching:', (error as Error).message);
     return null;
